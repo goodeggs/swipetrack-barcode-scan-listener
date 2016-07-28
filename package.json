@@ -1,0 +1,67 @@
+{
+  "name": "swipetrack-barcode-scan-listener",
+  "version": "1.0.0",
+  "description": "Listen for SwipeTrack barcode scan events in the browser.",
+  "main": "index.js",
+  "author": "Good Eggs Inc.",
+  "contributors": [
+    "dannynelson <danny@goodeggs.com>"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/goodeggs/swipetrack-barcode-scan-listener.git"
+  },
+  "keywords": [
+    "barcode",
+    "scan",
+    "listener"
+  ],
+  "engines": {
+    "node": "4.2.6",
+    "npm": "^3.7"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.6.5",
+    "babel-plugin-add-module-exports": "^0.1.2",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-register": "^6.7.2",
+    "chai": "^3.5.0",
+    "dirty-chai": "^1.2.2",
+    "eslint": "^2.8.0",
+    "eslint-plugin-goodeggs": "^2.0.0",
+    "in-publish": "^2.0.0",
+    "jsdom": "^8.1.0",
+    "lodash": "^4.8.2",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.3",
+    "sinon-chai": "^2.8.0"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ],
+    "plugins": [
+      "add-module-exports"
+    ]
+  },
+  "scripts": {
+    "build": "rm -rf build/ && babel src -d build && cp package.json can_publish build/",
+    "lint": "eslint 'src/**/*.js'  --ignore-path .gitignore",
+    "prepublish": "./can_publish",
+    "postpublish": "npm cache clean",
+    "test": "npm run build && mocha --require=test/jsdom"
+  },
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
+  },
+  "eslintConfig": {
+    "plugins": [
+      "goodeggs"
+    ],
+    "extends": [
+      "plugin:goodeggs/goodeggs"
+    ]
+  }
+}
