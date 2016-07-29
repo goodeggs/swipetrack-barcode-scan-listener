@@ -22,14 +22,14 @@ export default {
     /**
      * SwipeTrack calls this function, if defined, whenever a barcode is scanned
      * within the SwipeTrack browser.  See "SwipeTrack Browser JavaScript Functions" section of
-     * SwipeTrack API: http://swipetrack.net/support/faq/pdf/SwipeTrack%20API%20(v5.0.0).pdf
+     * SwipeTrack API: http://swipetrack.net/SwipeTrack-API-v5.pdf
     */
-    if (typeof window.onScanAppBarCodeData !== 'function') {
-      window.onScanAppBarCodeData = function (barcode) {
-        window.onScanAppBarCodeData.scanHandlers.forEach((handler) => handler(barcode));
+    if (typeof window.stBrowserDidScanBarcode !== 'function') {
+      window.stBrowserDidScanBarcode = function (type, barcode) {
+        window.stBrowserDidScanBarcode.scanHandlers.forEach((handler) => handler(barcode));
         return true;
       };
-      window.onScanAppBarCodeData.scanHandlers = [];
+      window.stBrowserDidScanBarcode.scanHandlers = [];
     }
     const swipeTrackHandler = function (barcode) {
       if (barcode.match(`^${barcodePrefix}`) !== null) {
@@ -39,12 +39,12 @@ export default {
         }
       }
     };
-    window.onScanAppBarCodeData.scanHandlers.push(swipeTrackHandler);
+    window.stBrowserDidScanBarcode.scanHandlers.push(swipeTrackHandler);
 
     const removeListener = function () {
-      const swipeTrackHandlerIndex = window.onScanAppBarCodeData.scanHandlers.indexOf(swipeTrackHandler);
+      const swipeTrackHandlerIndex = window.stBrowserDidScanBarcode.scanHandlers.indexOf(swipeTrackHandler);
       if (swipeTrackHandlerIndex >= 0) {
-        window.onScanAppBarCodeData.scanHandlers.splice(swipeTrackHandlerIndex, 1);
+        window.stBrowserDidScanBarcode.scanHandlers.splice(swipeTrackHandlerIndex, 1);
       }
     };
     return removeListener;

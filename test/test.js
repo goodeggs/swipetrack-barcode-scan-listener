@@ -12,16 +12,7 @@ chai.use(sinonChai);
 chai.use(dirtyChai);
 const expect = chai.expect;
 
-const scanBarcode = function (barcode, {scanDuration} = {scanDuration: 100}) {
-  const clock = sinon.useFakeTimers();
-  const triggerKeypressEvent = function (char) {
-    const event = new Event('keypress');
-    event.which = char.charCodeAt(0);
-    document.dispatchEvent(event);
-  };
-  barcode.split('').forEach(triggerKeypressEvent);
-  clock.tick(scanDuration);
-};
+const CODE_128_ST_TYPE = 7;
 
 describe('swipetrackBarcodeScanListener.onScan()', function () {
   describe('validation', function () {
@@ -47,7 +38,7 @@ describe('swipetrackBarcodeScanListener.onScan()', function () {
       barcodePrefix: 'L%',
       barcodeValueTest: /.*/,
     }, scanHandler);
-    window.onScanAppBarCodeData('S%123abc');
+    window.stBrowserDidScanBarcode(CODE_128_ST_TYPE, 'S%123abc');
     expect(scanHandler).not.to.have.been.called();
   });
 
@@ -57,7 +48,7 @@ describe('swipetrackBarcodeScanListener.onScan()', function () {
       barcodePrefix: 'L%',
       barcodeValueTest: /^123.*/,
     }, scanHandler);
-    window.onScanAppBarCodeData('S%312abc');
+    window.stBrowserDidScanBarcode(CODE_128_ST_TYPE, 'S%312abc');
     expect(scanHandler).not.to.have.been.called();
   });
 
@@ -67,7 +58,7 @@ describe('swipetrackBarcodeScanListener.onScan()', function () {
       barcodePrefix: 'L%',
       barcodeValueTest: /^123.*/,
     }, scanHandler);
-    window.onScanAppBarCodeData('L%123abc');
+    window.stBrowserDidScanBarcode(CODE_128_ST_TYPE, 'L%123abc');
     expect(scanHandler).to.have.been.calledOnce();
     expect(scanHandler).to.have.been.calledWith('123abc');
   });
@@ -85,8 +76,8 @@ describe('swipetrackBarcodeScanListener.onScan()', function () {
       barcodeValueTest: /.*/,
     }, sheepScanHandler);
 
-    window.onScanAppBarCodeData('L%mylot');
-    window.onScanAppBarCodeData('S%mysheep');
+    window.stBrowserDidScanBarcode(CODE_128_ST_TYPE, 'L%mylot');
+    window.stBrowserDidScanBarcode(CODE_128_ST_TYPE, 'S%mysheep');
 
     expect(lotScanHandler).to.have.been.calledOnce();
     expect(lotScanHandler).to.have.been.calledWith('mylot');
@@ -110,10 +101,10 @@ describe('swipetrackBarcodeScanListener.onScan()', function () {
 
     removeListener();
 
-    window.onScanAppBarCodeData('S%123abc');
+    window.stBrowserDidScanBarcode(CODE_128_ST_TYPE, 'S%123abc');
     expect(sheepScanHandler).to.have.been.calledOnce();
 
-    window.onScanAppBarCodeData('L%123abc');
+    window.stBrowserDidScanBarcode(CODE_128_ST_TYPE, 'L%123abc');
     expect(lotScanHandler).not.to.have.been.called();
   });
 });
