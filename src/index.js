@@ -31,6 +31,15 @@ export default {
       };
       window.stBrowserDidScanBarcode.scanHandlers = [];
     }
+
+    /**
+     * `stBrowserDidScanBarcode` was named `onScanAppBarCodeData in the old version
+     * of the SwipeTrack API:
+     * http://swipetrack.net/support/osfaq.php?cid=3&answer=11
+     * If not defined, SwipeTrack throws a ReferenceError on every barcode scan.
+     */
+    window.onScanAppBarCodeData = undefined;
+
     const swipeTrackHandler = function (barcode) {
       if (barcode.match(`^${barcodePrefix}`) !== null) {
         const barcodeValue = barcode.slice(barcodePrefix.length);
@@ -39,6 +48,7 @@ export default {
         }
       }
     };
+
     window.stBrowserDidScanBarcode.scanHandlers.push(swipeTrackHandler);
 
     const removeListener = function () {
@@ -47,6 +57,7 @@ export default {
         window.stBrowserDidScanBarcode.scanHandlers.splice(swipeTrackHandlerIndex, 1);
       }
     };
+
     return removeListener;
   },
 };
