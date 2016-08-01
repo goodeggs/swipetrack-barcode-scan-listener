@@ -36,9 +36,11 @@ export default {
      * `stBrowserDidScanBarcode` was named `onScanAppBarCodeData in the old version
      * of the SwipeTrack API:
      * http://swipetrack.net/support/osfaq.php?cid=3&answer=11
-     * If not defined, SwipeTrack throws a ReferenceError on every barcode scan.
+     * SwipeTrack tries to call both methods, so set this one as an anonymous function.
      */
-    window.onScanAppBarCodeData = undefined;
+    if (typeof window.onScanAppBarCodeData !== 'function') {
+      window.onScanAppBarCodeData = function () {};
+    }
 
     const swipeTrackHandler = function (barcode) {
       if (barcode.match(`^${barcodePrefix}`) !== null) {

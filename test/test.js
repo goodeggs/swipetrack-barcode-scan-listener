@@ -86,6 +86,17 @@ describe('swipetrackBarcodeScanListener.onScan()', function () {
     expect(sheepScanHandler).to.have.been.calledWith('mysheep');
   });
 
+  it('does not error when trying to call `onScanAppBarCodeData`', function () {
+    const scanHandler = sinon.stub();
+    barcodeScanListener.onScan({
+      barcodePrefix: 'L%',
+      barcodeValueTest: /.*/,
+    }, scanHandler);
+    expect(
+      () => window.onScanAppBarCodeData('S%123abc', CODE_128_ST_TYPE)
+    ).not.to.throw();
+  });
+
   it('removes the listener on remove', function () {
     const lotScanHandler = sinon.stub();
     const removeListener = barcodeScanListener.onScan({
