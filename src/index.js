@@ -33,10 +33,11 @@ export default {
     }
 
     /**
-     * `stBrowserDidScanBarcode` was named `onScanAppBarCodeData in the old version
+     * `stBrowserDidScanBarcode` was named `onScanAppBarCodeData` in the old version
      * of the SwipeTrack API:
      * http://swipetrack.net/support/osfaq.php?cid=3&answer=11
-     * SwipeTrack tries to call both methods, so set this one as an anonymous function.
+     * SwipeTrack tries to call both methods, so define this one as an anonymous function
+     * to prevent calling the scanHandler twice.
      */
     if (typeof window.onScanAppBarCodeData !== 'function') {
       window.onScanAppBarCodeData = function () {};
