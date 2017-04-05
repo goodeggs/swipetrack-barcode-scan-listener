@@ -1,6 +1,6 @@
 {
   "name": "swipetrack-barcode-scan-listener",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Listen for SwipeTrack barcode scan events in the browser.",
   "main": "index.js",
   "author": "Good Eggs Inc.",
